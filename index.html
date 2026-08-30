@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>その投稿、本当に大丈夫？ ｜ SNSトラブル啓発サイト</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EFF2EC;
+    --paper-deep:#E3E9E1;
+    --ink:#1F232B;
+    --ink-soft:#525A67;
+    --primary:#2F4858;
+    --primary-deep:#1B2B34;
+    --accent-stop:#D6484F;
+    --accent-soft:#7FB0AC;
+    --highlight:#F2C14E;
+    --white:#FFFFFF;
+    --line:rgba(31,35,43,0.12);
+    --radius:18px;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans JP",sans-serif;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4,.display{
+    font-family:"Zen Kaku Gothic New",sans-serif;
+    font-weight:900;
+    line-height:1.4;
+    margin:0;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  section{padding:88px 0;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:"Zen Kaku Gothic New",sans-serif;
+    font-size:13px;font-weight:700;letter-spacing:.14em;
+    color:var(--primary);
+    margin-bottom:16px;
+  }
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--accent-stop);display:inline-block;}
+  .section-title{font-size:clamp(24px,4vw,36px);margin-bottom:18px;}
+  .section-lead{color:var(--ink-soft);font-size:16px;max-width:640px;margin-bottom:44px;}
+
+  /* ===== NAV ===== */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(239,242,236,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:var(--maxw);margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .logo{
+    font-family:"Zen Kaku Gothic New",sans-serif;
+    font-weight:900;font-size:17px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .logo .dot{width:10px;height:10px;border-radius:50%;background:var(--accent-stop);display:inline-block;}
+  nav.links{display:none;gap:28px;font-size:14px;font-weight:500;}
+  nav.links a{
+    text-decoration:none;color:var(--ink-soft);
+    position:relative;padding-bottom:4px;transition:color .2s;
+  }
+  nav.links a:hover{color:var(--primary);}
+  .nav-cta{
+    display:none;
+    background:var(--primary);color:var(--white);
+    padding:10px 18px;border-radius:999px;
+    font-size:13px;font-weight:700;text-decoration:none;
+    white-space:nowrap;
+  }
+  .burger{
+    background:none;border:none;cursor:pointer;padding:6px;
+    display:flex;flex-direction:column;gap:5px;
+  }
+  .burger span{width:24px;height:2px;background:var(--ink);display:block;}
+  .mobile-menu{
+    display:none;flex-direction:column;gap:2px;
+    padding:8px 24px 20px;border-top:1px solid var(--line);
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{
+    padding:12px 0;text-decoration:none;color:var(--ink);
+    border-bottom:1px solid var(--line);font-size:15px;font-weight:500;
+  }
+  .mobile-menu a.cta{color:var(--accent-stop);font-weight:700;}
+
+  @media(min-width:860px){
+    nav.links{display:flex;}
+    .nav-cta{display:inline-block;}
+    .burger{display:none;}
+  }
+
+  /* ===== HERO ===== */
+  .hero{padding:64px 0 40px;}
+  .hero-grid{
+    display:grid;grid-template-columns:1fr;gap:48px;align-items:center;
+  }
+  .hero-copy .eyebrow{margin-bottom:20px;}
+  .hero h1{
+    font-size:clamp(30px,6vw,52px);
+    letter-spacing:-0.01em;
+    margin-bottom:22px;
+  }
+  .hero h1 .accent{color:var(--accent-stop);}
+  .hero p.lead{
+    font-size:17px;color:var(--ink-soft);max-width:520px;margin-bottom:30px;
+  }
+  .hero-questions{
+    display:flex;flex-direction:column;gap:12px;margin-bottom:8px;
+  }
+  .hero-q{
+    background:var(--white);border:1px solid var(--line);
+    border-radius:14px;padding:16px 18px;font-size:14.5px;
+    display:flex;gap:12px;align-items:flex-start;
+  }
+  .hero-q .num{
+    font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;
+    color:var(--accent-soft);font-size:13px;flex-shrink:0;margin-top:2px;
+  }
+
+  /* ---- phone widget (signature element) ---- */
+  .phone-stage{display:flex;justify-content:center;}
+  .phone{
+    width:290px;background:var(--primary-deep);
+    border-radius:38px;padding:14px;
+    box-shadow:0 30px 60px -20px rgba(27,43,52,0.45);
+    position:relative;
+  }
+  .phone::before{
+    content:"";position:absolute;top:24px;left:50%;transform:translateX(-50%);
+    width:64px;height:6px;border-radius:4px;background:rgba(255,255,255,0.18);
+  }
+  .phone-screen{
+    background:var(--paper);border-radius:26px;
+    padding:34px 16px 18px;min-height:420px;
+    display:flex;flex-direction:column;gap:16px;
+  }
+  .phone-label{
+    font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;
+    font-size:12px;color:var(--ink-soft);text-align:center;letter-spacing:.05em;
+  }
+  .bubble{
+    background:var(--white);border:1px solid var(--line);
+    border-radius:14px 14px 14px 4px;padding:12px 14px;
+    font-size:13.5px;color:var(--ink);align-self:flex-start;max-width:88%;
+  }
+  .checklist{
+    background:var(--white);border:1px dashed var(--line);
+    border-radius:14px;padding:14px 14px 6px;display:flex;flex-direction:column;gap:10px;
+  }
+  .checklist p{margin:0 0 2px;font-size:11.5px;font-weight:700;color:var(--primary);
+    font-family:"Zen Kaku Gothic New",sans-serif;letter-spacing:.04em;}
+  .check-row{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;cursor:pointer;padding-bottom:10px;}
+  .check-row input{
+    appearance:none;width:19px;height:19px;flex-shrink:0;margin-top:1px;
+    border:2px solid var(--ink-soft);border-radius:6px;
+    display:grid;place-content:center;cursor:pointer;
+  }
+  .check-row input::before{
+    content:"";width:10px;height:10px;border-radius:2px;
+    transform:scale(0);transition:.15s transform;background:var(--primary);
+  }
+  .check-row input:checked{border-color:var(--primary);}
+  .check-row input:checked::before{transform:scale(1);}
+  .post-btn{
+    margin-top:auto;
+    background:#C9CFC6;color:#8A9086;border:none;border-radius:12px;
+    padding:13px;font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;
+    font-size:14px;cursor:not-allowed;transition:.25s all;
+  }
+  .post-btn.active{
+    background:var(--primary);color:var(--white);cursor:pointer;
+    box-shadow:0 8px 20px -6px rgba(47,72,88,0.5);
+  }
+  .post-btn.sent{background:var(--accent-soft);color:var(--primary-deep);}
+  .phone-note{font-size:11px;color:var(--ink-soft);text-align:center;min-height:16px;}
+  .reset-link{
+    text-align:center;font-size:11.5px;color:var(--primary);text-decoration:underline;
+    cursor:pointer;background:none;border:none;padding:0;
+  }
+
+  @media(min-width:900px){
+    .hero-grid{grid-template-columns:1.05fr 0.85fr;}
+  }
+
+  /* ===== FLOATING CONSULT BUTTON ===== */
+  .float-consult{
+    position:fixed;right:18px;bottom:18px;z-index:60;
+    background:var(--accent-stop);color:var(--white);text-decoration:none;
+    padding:14px 20px;border-radius:999px;
+    font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:13.5px;
+    box-shadow:0 12px 24px -8px rgba(214,72,79,0.55);
+    display:flex;align-items:center;gap:8px;
+  }
+  .float-consult svg{width:16px;height:16px;flex-shrink:0;}
+
+  /* ===== DAILY USE GRID ===== */
+  .use-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:14px;
+  }
+  @media(min-width:640px){.use-grid{grid-template-columns:repeat(4,1fr);}}
+  .use-tile{
+    background:var(--white);border:1px solid var(--line);border-radius:16px;
+    padding:22px 16px;text-align:center;
+  }
+  .use-tile .k{
+    font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:22px;
+    color:var(--primary);display:block;margin-bottom:8px;
+  }
+  .use-tile p{margin:0;font-size:13px;color:var(--ink-soft);}
+
+  .band{background:var(--primary-deep);color:var(--paper);}
+  .band .section-lead{color:rgba(239,242,236,0.72);}
+  .band .eyebrow{color:var(--highlight);}
+  .band .eyebrow::before{background:var(--highlight);}
+
+  /* ===== TWO COLUMN GAI/HIGAI ===== */
+  .duo{display:grid;grid-template-columns:1fr;gap:24px;}
+  @media(min-width:800px){.duo{grid-template-columns:1fr 1fr;}}
+  .duo-card{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:20px;padding:28px 26px;
+  }
+  .duo-card.stop{border-color:rgba(214,72,79,0.5);background:rgba(214,72,79,0.08);}
+  .duo-card.soft{border-color:rgba(127,176,172,0.5);background:rgba(127,176,172,0.08);}
+  .duo-card h3{font-size:19px;margin-bottom:6px;}
+  .duo-card .tag{
+    font-size:11.5px;font-weight:700;letter-spacing:.06em;
+    padding:4px 10px;border-radius:999px;display:inline-block;margin-bottom:14px;
+  }
+  .stop .tag{background:var(--accent-stop);color:#fff;}
+  .soft .tag{background:var(--accent-soft);color:var(--primary-deep);}
+  .duo-card ul{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .duo-card li{
+    display:flex;gap:10px;font-size:14px;color:rgba(239,242,236,0.88);
+    padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  .duo-card li:last-child{border-bottom:none;padding-bottom:0;}
+  .duo-card li .arrow{color:var(--highlight);flex-shrink:0;font-weight:700;}
+
+  /* ===== CASE STUDIES ===== */
+  .case{
+    background:var(--white);border:1px solid var(--line);
+    border-radius:22px;padding:32px;margin-bottom:28px;
+  }
+  .case-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+  .case-num{
+    width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:14px;flex-shrink:0;
+  }
+  .case h3{font-size:20px;}
+  .case .scene{
+    background:var(--paper-deep);border-radius:14px;padding:18px 20px;
+    font-size:14.5px;color:var(--ink-soft);margin-bottom:20px;
+  }
+  .case .prompt{
+    font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:15px;
+    color:var(--ink);margin-bottom:14px;
+  }
+  .checkbox-list{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:10px;}
+  .checkbox-list li{
+    display:flex;gap:10px;font-size:14.5px;align-items:flex-start;
+  }
+  .checkbox-list li::before{
+    content:"";width:16px;height:16px;border:2px solid var(--accent-soft);
+    border-radius:5px;flex-shrink:0;margin-top:3px;
+  }
+  .case .insight{
+    border-left:3px solid var(--accent-stop);padding-left:16px;
+    font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:15.5px;
+  }
+
+  /* ---- Instagram ノート風吹き出し ---- */
+  .ig-note-row{
+    display:flex;align-items:flex-end;gap:10px;margin-bottom:22px;
+  }
+  .ig-avatar{
+    width:40px;height:40px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,var(--accent-soft),var(--primary));
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:700;color:#fff;
+    font-family:"Zen Kaku Gothic New",sans-serif;
+    box-shadow:0 0 0 2px var(--white),0 0 0 3px var(--line);
+  }
+  .ig-note-bubble{
+    position:relative;
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:20px 20px 20px 4px;
+    padding:12px 18px;
+    font-size:14.5px;font-weight:500;color:var(--ink);
+    box-shadow:0 6px 16px -8px rgba(31,35,43,0.25);
+  }
+  .ig-note-meta{
+    font-size:10.5px;color:var(--ink-soft);margin-bottom:2px;
+    font-family:"Zen Kaku Gothic New",sans-serif;letter-spacing:.03em;
+  }
+
+  /* ===== KEY MESSAGE / QUOTE ===== */
+  .quote-section{background:var(--highlight);}
+  .quote-wrap{max-width:760px;margin:0 auto;text-align:center;}
+  .quote-wrap h2{
+    font-size:clamp(24px,4.4vw,38px);color:var(--primary-deep);margin-bottom:28px;
+  }
+  .quote-points{
+    display:grid;grid-template-columns:1fr;gap:14px;text-align:left;
+    margin-top:32px;
+  }
+  @media(min-width:700px){.quote-points{grid-template-columns:1fr 1fr;}}
+  .qpoint{
+    background:rgba(27,43,52,0.06);border-radius:14px;padding:16px 18px;
+    font-size:14px;color:var(--primary-deep);
+  }
+
+  /* ===== SUMMARY ===== */
+  .summary-grid{
+    display:grid;grid-template-columns:1fr;gap:16px;
+  }
+  @media(min-width:700px){.summary-grid{grid-template-columns:1fr 1fr;}}
+  .summary-item{
+    display:flex;gap:16px;align-items:flex-start;
+    background:var(--white);border:1px solid var(--line);border-radius:16px;padding:20px;
+  }
+  .summary-item .mark{
+    font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:20px;
+    color:var(--white);background:var(--primary);width:34px;height:34px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .summary-item p{margin:0;font-size:14.5px;color:var(--ink-soft);}
+  .summary-item strong{display:block;color:var(--ink);font-size:15.5px;margin-bottom:4px;font-family:"Zen Kaku Gothic New",sans-serif;}
+
+  /* ===== SOUDAN (CONSULT) ===== */
+  #soudan{background:var(--primary-deep);color:var(--paper);}
+  #soudan .eyebrow{color:var(--highlight);}
+  #soudan .eyebrow::before{background:var(--highlight);}
+  .soudan-grid{
+    display:grid;grid-template-columns:1fr;gap:18px;
+  }
+  @media(min-width:760px){.soudan-grid{grid-template-columns:1fr 1fr;}}
+  .soudan-card{
+    background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);
+    border-radius:18px;padding:24px;
+  }
+  .soudan-card h3{font-size:17px;margin-bottom:10px;}
+  .soudan-tel{
+    font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:26px;
+    color:var(--highlight);display:block;margin-bottom:6px;text-decoration:none;
+  }
+  .soudan-meta{font-size:12.5px;color:rgba(239,242,236,0.65);margin-bottom:12px;}
+  .soudan-card p.desc{font-size:13.5px;color:rgba(239,242,236,0.85);margin:0;}
+  .soudan-card.school{
+    border:1px dashed rgba(242,193,78,0.7);
+    background:rgba(242,193,78,0.06);
+  }
+  .school-flag{
+    display:inline-block;font-size:11px;font-weight:700;color:var(--primary-deep);
+    background:var(--highlight);padding:3px 10px;border-radius:999px;margin-bottom:12px;
+  }
+  .soudan-source{
+    margin-top:36px;font-size:12px;color:rgba(239,242,236,0.5);line-height:1.9;
+  }
+
+  footer{
+    background:var(--primary-deep);color:rgba(239,242,236,0.55);
+    padding:32px 0;text-align:center;font-size:12.5px;
+    border-top:1px solid rgba(255,255,255,0.08);
+    line-height:1.9;
+  }
+  footer .org{
+    font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;
+    color:rgba(239,242,236,0.85);font-size:13.5px;margin-bottom:6px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <div class="logo"><span class="dot"></span>その投稿、大丈夫？</div>
+    <nav class="links">
+      <a href="#chikaku">SNSと私たち</a>
+      <a href="#kagai">加害・被害</a>
+      <a href="#jirei">事例</a>
+      <a href="#matome">まとめ</a>
+    </nav>
+    <a class="nav-cta" href="#soudan">相談窓口</a>
+    <button class="burger" onclick="document.getElementById('mmenu').classList.toggle('open')" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mmenu">
+    <a href="#chikaku">SNSと私たち</a>
+    <a href="#kagai">加害・被害</a>
+    <a href="#jirei">事例</a>
+    <a href="#matome">まとめ</a>
+    <a class="cta" href="#soudan">相談窓口を見る</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow">高校生のためのSNSリテラシー</div>
+      <h1>その投稿・発言、<br>本当に<span class="accent">大丈夫？</span></h1>
+      <p class="lead">
+        SNSを使うとき、「自分が誰かを傷つける側になるかもしれない」「自分が傷つけられる側になるかもしれない」——そのことを考えたことはありますか。
+      </p>
+      <div class="hero-questions">
+        <div class="hero-q"><span class="num">01</span>その写真、写っている人は投稿していいと言っていますか？</div>
+        <div class="hero-q"><span class="num">02</span>その一言、画面の向こうの相手を傷つけていませんか？</div>
+        <div class="hero-q"><span class="num">03</span>「たった一つの投稿」が、誰かの毎日を変えるかもしれません。</div>
+      </div>
+    </div>
+    <div class="phone-stage">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-label">投稿する前に、一度チェック</div>
+          <div class="bubble">友達と撮った写真、いい思い出だから投稿しよう！</div>
+          <div class="checklist">
+            <p>投稿前セルフチェック</p>
+            <label class="check-row"><input type="checkbox" class="ck">写っている本人に確認した</label>
+            <label class="check-row"><input type="checkbox" class="ck">顔・個人情報・場所が写っていないか確認した</label>
+            <label class="check-row"><input type="checkbox" class="ck">自分がされたらどう感じるか考えた</label>
+          </div>
+          <button class="post-btn" id="postBtn" disabled>すべてチェックすると投稿できます</button>
+          <div class="phone-note" id="phoneNote"></div>
+          <button class="reset-link" id="resetBtn" style="display:none;" onclick="resetPhone()">もう一度試す</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SNSと私たち -->
+<section id="chikaku">
+  <div class="wrap">
+    <div class="eyebrow">SNSは身近な存在</div>
+    <h2 class="section-title">毎日の中に、SNSがある</h2>
+    <p class="section-lead">便利で楽しいSNS。でもその何気ない使い方の中に、加害にも被害にもなり得るきっかけが隠れています。</p>
+    <div class="use-grid">
+      <div class="use-tile"><span class="k">📷</span><p>写真や動画を投稿する時</p></div>
+      <div class="use-tile"><span class="k">💬</span><p>友達とメッセージをする時</p></div>
+      <div class="use-tile"><span class="k">🔍</span><p>情報を調べる時</p></div>
+      <div class="use-tile"><span class="k">📣</span><p>日常の出来事を発信する時</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 加害・被害 -->
+<section id="kagai" class="band">
+  <div class="wrap">
+    <div class="eyebrow">たった一つの投稿が</div>
+    <h2 class="section-title">気づかないうちに、加害者にも被害者にもなり得る</h2>
+    <p class="section-lead">「そんなつもりじゃなかった」——軽い気持ちの投稿が、誰かを深く傷つけることがあります。逆に、自分が被害を受ける側になることも。</p>
+    <div class="duo">
+      <div class="duo-card stop">
+        <span class="tag">加害者になるかも</span>
+        <h3>自分が誰かを傷つけてしまう</h3>
+        <ul>
+          <li><span class="arrow">→</span>「友達だから載せても大丈夫」と、本人の許可なく写真を投稿してしまう</li>
+          <li><span class="arrow">→</span>「冗談のつもり」のコメントが、相手を傷つけるコメントになってしまう</li>
+          <li><span class="arrow">→</span>「面白いから共有しよう」が、誰かを傷つける情報の拡散になってしまう</li>
+        </ul>
+      </div>
+      <div class="duo-card soft">
+        <span class="tag">被害者になるかも</span>
+        <h3>自分が傷つけられてしまう</h3>
+        <ul>
+          <li><span class="arrow">→</span>自分の写真・動画を勝手に投稿される</li>
+          <li><span class="arrow">→</span>個人情報を知らない人に知られる</li>
+          <li><span class="arrow">→</span>誹謗中傷を受ける</li>
+          <li><span class="arrow">→</span>なりすましアカウントを作られる、投稿がきっかけのトラブルに巻き込まれる</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 事例 -->
+<section id="jirei">
+  <div class="wrap">
+    <div class="eyebrow">身近な事例</div>
+    <h2 class="section-title">実際にありそうな場面から考える</h2>
+    <p class="section-lead">2つの身近なシーンをもとに、投稿する前にどんなことを考えればよいか見てみましょう。</p>
+
+    <div class="case">
+      <div class="case-head">
+        <div class="case-num">1</div>
+        <h3>友達だから載せても大丈夫？</h3>
+      </div>
+      <div class="scene">友達と撮った写真をSNSに投稿しようと思っています。「この写真いい思い出だし投稿しよう」——でも、一緒に写っている人は投稿されても大丈夫でしょうか。</div>
+      <p class="prompt">投稿する前に、確認したいこと</p>
+      <ul class="checkbox-list">
+        <li>本人に確認した？</li>
+        <li>顔出ししても大丈夫？</li>
+        <li>写っている場所や情報は大丈夫？</li>
+      </ul>
+      <p class="insight">「載せたい」気持ちだけで決めず、写真に写っている人の気持ちを考えよう。</p>
+    </div>
+
+    <div class="case">
+      <div class="case-head">
+        <div class="case-num">2</div>
+        <h3>Instagramの「ノート」、その一言</h3>
+      </div>
+      <div class="scene">今日、関わっていた人がこんな投稿をしていたら——名前が書かれていなくても、「え、もしかして私のこと……？」と一瞬不安になりませんか。</div>
+      <div class="ig-note-row">
+        <div class="ig-avatar">A</div>
+        <div class="ig-note-bubble">
+          <div class="ig-note-meta">ノート</div>
+          あの人ほんと無理
+        </div>
+      </div>
+      <p class="prompt">名前を書いていないから大丈夫、ではない</p>
+      <ul class="checkbox-list">
+        <li>投稿する側の軽い気持ちと、見る側の受け止め方には、大きなズレが生じることがある</li>
+        <li>周囲が特定できてしまう表現は、名前を出していなくても攻撃になり得る</li>
+      </ul>
+      <p class="insight">「匂わせ投稿」も、読む人を不安にさせるトラブルの原因になります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- キーメッセージ -->
+<section class="quote-section">
+  <div class="wrap quote-wrap">
+    <div class="eyebrow" style="color:var(--primary-deep);">大切なこと</div>
+    <h2>文字は、人を傷つける凶器になる</h2>
+    <div class="quote-points">
+      <div class="qpoint">直接顔を見て言えないことを、SNSでなら言っていい理由にはなりません。</div>
+      <div class="qpoint">画面の向こう側にも、自分と同じように気持ちを持つ人がいます。相手の立場だったらと考えてみましょう。</div>
+      <div class="qpoint">相手の名前を出さなくても、周囲が特定できるような攻撃的・不快な発言はやめましょう。</div>
+      <div class="qpoint">ノートなどでの「お気持ちコメント」や匂わせ発言も、トラブルの原因になります。</div>
+    </div>
+  </div>
+</section>
+
+<!-- まとめ -->
+<section id="matome">
+  <div class="wrap">
+    <div class="eyebrow">まとめ</div>
+    <h2 class="section-title">SNSを使わないのではなく、使い方を考える</h2>
+    <p class="section-lead">SNSそのものが悪いわけではありません。投稿する前に、少しだけ立ち止まる習慣を持つことが大切です。</p>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="mark">1</div>
+        <p><strong>投稿前に、一度立ち止まる</strong>写真も言葉も、送信ボタンを押す前に一呼吸おこう。</p>
+      </div>
+      <div class="summary-item">
+        <div class="mark">2</div>
+        <p><strong>写っている人の許可をとる</strong>写真や動画は、写っている本人の許可をとってから投稿しよう。</p>
+      </div>
+      <div class="summary-item">
+        <div class="mark">3</div>
+        <p><strong>個人情報や場所を安易に公開しない</strong>顔・学校名・自宅周辺などが特定できる情報に注意しよう。</p>
+      </div>
+      <div class="summary-item">
+        <div class="mark">4</div>
+        <p><strong>「自分がされたら」を考える</strong>その投稿・コメントを、自分がされたらどう思うか想像しよう。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 相談窓口 -->
+<section id="soudan">
+  <div class="wrap">
+    <div class="eyebrow">一人で抱え込まないで</div>
+    <h2 class="section-title">相談窓口</h2>
+    <p class="section-lead">SNSのトラブルで困ったとき、悩んでいるとき、話すことで気持ちが少し軽くなることがあります。以下の窓口はいつでも利用できます。</p>
+    <div class="soudan-grid">
+
+      <div class="soudan-card">
+        <h3>24時間子供SOSダイヤル（文部科学省）</h3>
+        <a class="soudan-tel" href="tel:0120078310">0120-0-78310</a>
+        <div class="soudan-meta">「なやみいおう」／24時間受付・年中無休／通話料無料</div>
+        <p class="desc">いじめやSNSでのトラブルなど、子どものSOS全般について、夜間・休日を含めいつでも相談できます。</p>
+      </div>
+
+      <div class="soudan-card">
+        <h3>こどもの人権110番（法務省）</h3>
+        <a class="soudan-tel" href="tel:0120007110">0120-007-110</a>
+        <div class="soudan-meta">平日 8:30〜17:15／通話料無料</div>
+        <p class="desc">誹謗中傷や個人情報の拡散など、人権に関わる悩みを法務局職員・人権擁護委員に相談できます。相談内容の秘密は守られます。</p>
+      </div>
+
+      <div class="soudan-card">
+        <h3>チャイルドライン</h3>
+        <a class="soudan-tel" href="tel:0120997777">0120-99-7777</a>
+        <div class="soudan-meta">毎日 16:00〜21:00（12/29〜1/3は休み）</div>
+        <p class="desc">18歳までの子どもがかけられる相談専用電話。名前を言わなくても大丈夫です。</p>
+      </div>
+
+      <div class="soudan-card school">
+        <span class="school-flag">学校での相談先</span>
+        <h3>先生方、スクールカウンセラー</h3>
+        <p class="desc">
+          担任の先生でも保健室の先生でも、学年の先生でも、教科の先生でも、誰にでも相談してください。<br>
+          もちろん、スクールカウンセラーにも相談できます。
+        </p>
+      </div>
+
+    </div>
+    <p class="soudan-source">
+      出典：文部科学省「24時間子供SOSダイヤル」／法務省「こどもの人権110番」／NPO法人チャイルドライン支援センター（2026年8月時点の情報）。最新の受付時間・番号は各機関の公式サイトでご確認ください。
+    </p>
+  </div>
+</section>
+
+<a class="float-consult" href="#soudan">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+  相談窓口
+</a>
+
+<footer>
+  <div class="wrap">
+    <div class="org">北海道平取高等学校 生徒会執行部</div>
+    〒055-0107　北海道沙流郡平取町本町109番地２<br>
+    TEL：01457-2-2709　／　FAX：01457-2-2849
+  </div>
+</footer>
+
+<script>
+  const checks = document.querySelectorAll('.ck');
+  const postBtn = document.getElementById('postBtn');
+  const note = document.getElementById('phoneNote');
+  const resetBtn = document.getElementById('resetBtn');
+
+  function refresh(){
+    const allChecked = Array.from(checks).every(c => c.checked);
+    if(allChecked){
+      postBtn.disabled = false;
+      postBtn.classList.add('active');
+      postBtn.textContent = '投稿する';
+    } else {
+      postBtn.disabled = true;
+      postBtn.classList.remove('active','sent');
+      postBtn.textContent = 'すべてチェックすると投稿できます';
+      note.textContent = '';
+      resetBtn.style.display = 'none';
+    }
+  }
+  checks.forEach(c => c.addEventListener('change', refresh));
+
+  postBtn.addEventListener('click', () => {
+    if(postBtn.disabled) return;
+    postBtn.classList.remove('active');
+    postBtn.classList.add('sent');
+    postBtn.textContent = '投稿完了 ✓';
+    note.textContent = 'その「一度立ち止まる」気持ちを、これからも忘れずに。';
+    resetBtn.style.display = 'inline-block';
+  });
+
+  function resetPhone(){
+    checks.forEach(c => c.checked = false);
+    refresh();
+  }
+
+  // mobile menu auto-close on link click
+  document.querySelectorAll('.mobile-menu a').forEach(a=>{
+    a.addEventListener('click', ()=> document.getElementById('mmenu').classList.remove('open'));
+  });
+</script>
+
+</body>
+</html>
